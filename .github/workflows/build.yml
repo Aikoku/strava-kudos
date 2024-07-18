@@ -36,4 +36,3 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/strava-kudos:latest
-
