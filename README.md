@@ -16,7 +16,7 @@ Alternatively, you can run the script manually with
 python3 give_kudos.py
 ```
 
-## 🛠️Setup 
+## 🛠️Setup
 
 ### Playwright
 [Playwright](https://github.com/microsoft/playwright-python) is used, so be sure to follow instructions to install it properly.
