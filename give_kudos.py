@@ -15,7 +15,7 @@ class KudosGiver:
         self.PASSWORD = os.environ.get('STRAVA_PASSWORD')
 
         if self.EMAIL is None or self.PASSWORD is None:
-            raise Exception(f"Must set environ variables EMAIL AND PASSWORD. \
+            raise Exception("Must set environ variables EMAIL AND PASSWORD. \
                 e.g. run export STRAVA_EMAIL=YOUR_EMAIL")
 
         self.max_run_duration = max_run_duration
@@ -33,9 +33,13 @@ class KudosGiver:
         Login using email and password
         """
         self.page.goto(os.path.join(BASE_URL, 'login'))
-        self.page.fill('#email', self.EMAIL)
-        self.page.fill("#password", self.PASSWORD)
-        self.page.click("button[type='submit']")
+        try:
+            self.page.get_by_role("button", name="Reject").click(timeout=5000)
+        except Exception as _:
+            pass
+        self.page.get_by_role("textbox", name='email').fill(self.EMAIL)
+        self.page.get_by_role("textbox", name="password").fill(self.PASSWORD)
+        self.page.get_by_role("button", name="Log In").click()
         print("---Logged in!!---")
         self._run_with_retries(func=self._get_page_and_own_profile)
         
@@ -49,7 +53,7 @@ class KudosGiver:
             try:
                 func()
                 return
-            except:
+            except Exception as _:
                 time.sleep(1)
 
     def _get_page_and_own_profile(self):
@@ -67,7 +71,7 @@ class KudosGiver:
         try:
             self.own_profile_id = self.page.locator(".user-menu > a").get_attribute('href').split("/athletes/")[1]
             print("id", self.own_profile_id)
-        except:
+        except Exception as _:
             print("can't find own profile ID")
 
     def locate_kudos_buttons_and_maybe_give_kudos(self, web_feed_entry_locator) -> int:
@@ -131,7 +135,7 @@ class KudosGiver:
             h = container.get_by_test_id("owners-name").get_attribute('href')
             hl = h.split("/athletes/")
             owner = hl[1]
-        except:
+        except Exception as _:
             print("Some issue with getting owners-name container.")
         return owner == self.own_profile_id
     
@@ -142,7 +146,7 @@ class KudosGiver:
         button = None
         try:
             button = container.get_by_test_id("unfilled_kudos")
-        except:
+        except Exception as _:
             print("Some issue with finding the unfilled_kudos container.")
         return button
 
@@ -163,6 +167,11 @@ class KudosGiver:
         Interate over web feed entries
         """
         ## Give Kudos on loaded page ##
+        try:
+            self.page.get_by_role("button", name="Accept").click(timeout=5000)
+            print("Accepting updated terms.")
+        except Exception as _:
+            pass
         web_feed_entry_locator = self.page.locator(self.web_feed_entry_pattern)
         self.locate_kudos_buttons_and_maybe_give_kudos(web_feed_entry_locator=web_feed_entry_locator)
         self.browser.close()
