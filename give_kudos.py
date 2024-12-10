@@ -70,6 +70,16 @@ class KudosGiver:
 
         try:
             self.own_profile_id = self.page.locator(".user-menu > a").get_attribute('href').split("/athletes/")[1]
+
+            print("1 ", self.page.locator(".user-menu > a"))
+            print("2 ", self.page.locator(".user-menu > a").get_attribute('href'))
+            print("21 ", self.page.locator(".user-menu > a").get_attribute('href').split("/athletes/")[1])
+            
+            time.sleep(0.5)
+            print("3 ", self.page.locator(".user-menu > a"))
+            print("4 ", self.page.locator(".user-menu > a").get_attribute('href'))
+            print("41 ", self.page.locator(".user-menu > a").get_attribute('href').split("/athletes/")[1])
+            
             print("id", self.own_profile_id)
         except Exception as _:
             print("can't find own profile ID")
