@@ -13,6 +13,7 @@ class KudosGiver:
     def __init__(self, max_run_duration=540) -> None:
         self.EMAIL = os.environ.get('STRAVA_EMAIL')
         self.PASSWORD = os.environ.get('STRAVA_PASSWORD')
+        self.ATHLETE_ID = os.environ.get('STRAVA_ATHLETE_ID')
 
         if self.EMAIL is None or self.PASSWORD is None:
             raise Exception("Must set environ variables EMAIL AND PASSWORD. \
@@ -68,7 +69,8 @@ class KudosGiver:
             time.sleep(0.5)
             self.page.keyboard.press('PageUp')
         try:
-            self.own_profile_id = self.page.locator(".user-menu > a").get_attribute('href').split("/athletes/")[1]
+            #self.own_profile_id = self.page.locator(".user-menu > a").get_attribute('href').split("/athletes/")[1]
+            self.own_profile_id = self.ATHLETE_ID
             print("id", self.own_profile_id)
         except Exception as _:
             print("can't find own profile ID")
