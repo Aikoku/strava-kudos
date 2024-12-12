@@ -131,7 +131,8 @@ class KudosGiver:
         """
         Returns true is the container's owner is logged-in user.
         """
-        owner = self.own_profile_id
+        #owner = self.own_profile_id
+        owner = self.ATHLETE_ID
         try:
             h = container.get_by_test_id("owners-name").get_attribute('href')
             hl = h.split("/athletes/")
