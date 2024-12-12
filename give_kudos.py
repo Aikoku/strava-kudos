@@ -4,7 +4,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 BASE_URL = "https://www.strava.com/"
-
+ 
 class KudosGiver:
     """
     Logins into Strava and gives kudos to all activities under
